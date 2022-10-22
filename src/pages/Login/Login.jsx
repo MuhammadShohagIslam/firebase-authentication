@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaFacebookF, FaGithub, FaGooglePlusG } from "react-icons/fa";
 import { useAuth } from "./../../contexts/AuthProvider/AuthProvider";
 import {
@@ -15,6 +15,8 @@ const Login = () => {
     const githubProvider = new GithubAuthProvider();
     const facebookProvider = new FacebookAuthProvider();
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -25,7 +27,7 @@ const Login = () => {
             .then((result) => {
                 form.reset();
                 toast.success("Login Successfully!");
-                navigate("/");
+                navigate(from, { replace: true });
             })
             .catch((error) => {
                 toast.error(error);
@@ -47,10 +49,10 @@ const Login = () => {
     const popupForSignInProvider = (provider) => {
         registerAndLoginWithProvider(provider)
             .then((result) => {
-                navigate("/");
+                navigate(from, { replace: true });
             })
             .catch((error) => {
-                toast.error("Something Went Wrong!")
+                toast.error("Something Went Wrong!");
             });
     };
 
@@ -58,6 +60,32 @@ const Login = () => {
         <div className="w-2/5 m-auto mt-8">
             <h2 className="text-center font-medium text-white text-2xl">
                 Login Now!
+            </h2>
+            <div className="space-y-2 mt-3">
+                <button
+                    onClick={(e) => handleSignUpWithProvider(e, "google")}
+                    className="btn btn-outline btn-primary btn-block text-white"
+                >
+                    <FaGooglePlusG className="text-lg mr-1" />
+                    Connection With Google
+                </button>
+                <button
+                    onClick={(e) => handleSignUpWithProvider(e, "github")}
+                    className="btn btn-outline btn-block btn-primary  text-white"
+                >
+                    <FaGithub className="text-lg mr-1"></FaGithub>
+                    Connection With GitHub
+                </button>
+                <button
+                    onClick={(e) => handleSignUpWithProvider(e, "facebook")}
+                    className="btn btn-outline btn-block btn-primary  text-white "
+                >
+                    <FaFacebookF className="text-lg mr-1" />
+                    Connection With FaceBook
+                </button>
+            </div>
+            <h2 className="text-center font-medium text-white text-xl mt-3">
+                Or
             </h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-control">
@@ -92,29 +120,6 @@ const Login = () => {
                         Register Now
                     </Link>
                 </p>
-                <div className="space-y-2 mt-3">
-                    <button
-                        onClick={(e) => handleSignUpWithProvider(e, "google")}
-                        className="btn btn-outline btn-primary btn-block text-white"
-                    >
-                        <FaGooglePlusG className="text-lg mr-1" />
-                        Register With Google
-                    </button>
-                    <button
-                        onClick={(e) => handleSignUpWithProvider(e, "github")}
-                        className="btn btn-outline btn-block btn-primary  text-white"
-                    >
-                        <FaGithub className="text-lg mr-1"></FaGithub>
-                        Register With GitHub
-                    </button>
-                    <button
-                        onClick={(e) => handleSignUpWithProvider(e, "facebook")}
-                        className="btn btn-outline btn-block btn-primary  text-white "
-                    >
-                        <FaFacebookF className="text-lg mr-1" />
-                        Register With FaceBook
-                    </button>
-                </div>
                 <div className="w-full text-center mt-5">
                     <button
                         type="submit"

@@ -37,8 +37,7 @@ const Register = () => {
             .then((result) => {
                 form.reset();
                 handleProfileUpdate(username, photoURL);
-                console.log(result.user);
-                navigate("/");
+                navigate("/login");
             })
             .catch((error) => {
                 console.log(error);
@@ -83,8 +82,34 @@ const Register = () => {
 
     return (
         <div className="w-2/5 m-auto mt-8 pb-20">
-            <h2 className="text-center font-medium text-white text-2xl">
+            <h2 className="text-center font-medium text-white text-2xl mb-2">
                 Register Now!
+            </h2>
+            <div className="space-y-2 mt-3">
+                <button
+                    onClick={(e) => handleSignUpWithProvider(e, "google")}
+                    className="btn btn-outline btn-primary btn-block text-white"
+                >
+                    <FaGooglePlusG className="text-lg mr-1" />
+                    Register With Google
+                </button>
+                <button
+                    onClick={(e) => handleSignUpWithProvider(e, "github")}
+                    className="btn btn-outline btn-block btn-primary  text-white"
+                >
+                    <FaGithub className="text-lg mr-1"></FaGithub>
+                    Register With GitHub
+                </button>
+                <button
+                    onClick={(e) => handleSignUpWithProvider(e, "facebook")}
+                    className="btn btn-outline btn-block btn-primary  text-white "
+                >
+                    <FaFacebookF className="text-lg mr-1" />
+                    Register With FaceBook
+                </button>
+            </div>
+            <h2 className="text-center font-medium text-white text-xl mt-3">
+                Or
             </h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-control">
@@ -159,29 +184,7 @@ const Register = () => {
                         Login
                     </Link>
                 </p>
-                <div className="space-y-2 mt-3">
-                    <button
-                        onClick={(e) => handleSignUpWithProvider(e, "google")}
-                        className="btn btn-outline btn-primary btn-block text-white"
-                    >
-                        <FaGooglePlusG className="text-lg mr-1" />
-                        Register With Google
-                    </button>
-                    <button
-                        onClick={(e) => handleSignUpWithProvider(e, "github")}
-                        className="btn btn-outline btn-block btn-primary  text-white"
-                    >
-                        <FaGithub className="text-lg mr-1"></FaGithub>
-                        Register With GitHub
-                    </button>
-                    <button
-                        onClick={(e) => handleSignUpWithProvider(e, "facebook")}
-                        className="btn btn-outline btn-block btn-primary  text-white "
-                    >
-                        <FaFacebookF className="text-lg mr-1" />
-                        Register With FaceBook
-                    </button>
-                </div>
+
                 <div className="w-full text-center mt-5">
                     <button
                         type="submit"

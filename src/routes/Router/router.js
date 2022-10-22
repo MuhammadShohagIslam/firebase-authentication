@@ -5,6 +5,7 @@ import Home from "../../pages/Home/Home";
 import Login from "../../pages/Login/Login";
 import Profile from "../../pages/Profile/Profile";
 import Register from "../../pages/Register/Register";
+import PrivateRouter from "../PrivateRouter/PrivateRouter";
 
 const router = createBrowserRouter([
     {
@@ -16,20 +17,30 @@ const router = createBrowserRouter([
                 element: <Home />,
             },
             {
-                path: "blog",
-                element: <Blog />,
+                path: "/blog",
+                element: (
+                    <PrivateRouter>
+                        <Blog />
+                    </PrivateRouter>
+                ),
+                loader: () =>
+                    fetch("https://jsonplaceholder.typicode.com/posts"),
             },
             {
-                path: "login",
+                path: "/login",
                 element: <Login />,
             },
             {
-                path: "register",
+                path: "/register",
                 element: <Register />,
             },
             {
-                path: "profile",
-                element: <Profile />,
+                path: "/profile",
+                element: (
+                    <PrivateRouter>
+                        <Profile />
+                    </PrivateRouter>
+                ),
             },
         ],
     },

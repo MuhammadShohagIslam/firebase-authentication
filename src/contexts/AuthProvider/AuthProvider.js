@@ -18,11 +18,13 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
+    const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
+            setLoading(false);
         });
         return () => {
             unsubscribe();
@@ -30,27 +32,33 @@ const AuthProvider = ({ children }) => {
     }, []);
 
     const createUser = (email, password) => {
+        setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password);
     };
 
     const profileUpdate = (profile) => {
+        setLoading(true);
         return updateProfile(auth.currentUser, profile);
     };
 
     const logOut = () => {
+        setLoading(true);
         return signOut(auth);
     };
 
     const logIn = (email, password) => {
+        setLoading(true);
         return signInWithEmailAndPassword(auth, email, password);
     };
 
     const registerAndLoginWithProvider = (provider) => {
+        setLoading(true);
         return signInWithPopup(auth, provider);
     };
 
     const values = {
         user,
+        loading,
         createUser,
         profileUpdate,
         logOut,
