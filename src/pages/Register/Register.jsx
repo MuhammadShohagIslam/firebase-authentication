@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaFacebookF, FaGithub, FaGooglePlusG } from "react-icons/fa";
 import { useAuth } from "../../contexts/AuthProvider/AuthProvider";
@@ -17,6 +17,8 @@ const Register = () => {
     const googleProvider = new GoogleAuthProvider();
     const githubProvider = new GithubAuthProvider();
     const facebookProvider = new FacebookAuthProvider();
+
+    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -36,6 +38,7 @@ const Register = () => {
                 form.reset();
                 handleProfileUpdate(username, photoURL);
                 console.log(result.user);
+                navigate("/");
             })
             .catch((error) => {
                 console.log(error);
@@ -71,7 +74,10 @@ const Register = () => {
 
     const popupForSignInProvider = (provider) => {
         registerAndLoginWithProvider(provider)
-            .then((result) => {})
+            .then((result) => {
+                console.log(result);
+                navigate("/");
+            })
             .catch((error) => {});
     };
 

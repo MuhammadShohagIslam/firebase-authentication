@@ -46,7 +46,10 @@ const Login = () => {
 
     const popupForSignInProvider = (provider) => {
         registerAndLoginWithProvider(provider)
-            .then((result) => {})
+            .then((result) => {
+                navigate("/");
+                console.log(result.user)
+            })
             .catch((error) => {});
     };
 

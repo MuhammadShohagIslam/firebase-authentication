@@ -5,7 +5,7 @@ import { useAuth } from "./../../../contexts/AuthProvider/AuthProvider";
 
 const Header = () => {
     const { user, logOut } = useAuth();
-    
+
     const handleLogOut = () => {
         logOut()
             .then(() => {
@@ -43,10 +43,10 @@ const Header = () => {
                 {user?.uid && (
                     <>
                         <li className="mr-2">
-                            <Link to="/">{user?.displayName}</Link>
+                            <Link to="/profile">{user?.displayName}</Link>
                         </li>
                         <li className="flex">
-                            <Link to="/">
+                            <Link to="/profile">
                                 <img
                                     className="w-9 h-9 rounded-full"
                                     src={user?.photoURL}
