@@ -48,9 +48,10 @@ const Login = () => {
         registerAndLoginWithProvider(provider)
             .then((result) => {
                 navigate("/");
-                console.log(result.user)
             })
-            .catch((error) => {});
+            .catch((error) => {
+                toast.error("Something Went Wrong!")
+            });
     };
 
     return (
