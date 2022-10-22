@@ -10,7 +10,7 @@ import {
 import toast from "react-hot-toast";
 
 const Login = () => {
-    const { logIn, registerAndLoginWithProvider } = useAuth();
+    const { logIn, registerAndLoginWithProvider, setLoading } = useAuth();
     const googleProvider = new GoogleAuthProvider();
     const githubProvider = new GithubAuthProvider();
     const facebookProvider = new FacebookAuthProvider();
@@ -25,12 +25,20 @@ const Login = () => {
         const password = form.password.value;
         logIn(email, password)
             .then((result) => {
-                form.reset();
-                toast.success("Login Successfully!");
-                navigate(from, { replace: true });
+                if (result.user.emailVerified) {
+                    form.reset();
+                    toast.success("Login Successfully!");
+                    navigate(from, { replace: true });
+                } else {
+                    toast.success("Verify Your Email Address!");
+                    navigate("/login");
+                }
             })
             .catch((error) => {
                 toast.error(error);
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
     const handleSignUpWithProvider = (event, providerName) => {

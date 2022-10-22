@@ -11,8 +11,13 @@ import {
 
 const Register = () => {
     const [error, setError] = useState("");
-    const { createUser, profileUpdate, registerAndLoginWithProvider } =
-        useAuth();
+    const {
+        createUser,
+        profileUpdate,
+        verifyEmail,
+        registerAndLoginWithProvider,
+        setLoading,
+    } = useAuth();
 
     const googleProvider = new GoogleAuthProvider();
     const githubProvider = new GithubAuthProvider();
@@ -37,10 +42,19 @@ const Register = () => {
             .then((result) => {
                 form.reset();
                 handleProfileUpdate(username, photoURL);
-                navigate("/login");
+                handleVerifyEmail();
+                if (result.user.emailVerified) {
+                    navigate("/");
+                } else {
+                    toast.success("Verify Your Email Address!");
+                    navigate("/register");
+                }
             })
             .catch((error) => {
                 console.log(error);
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -56,6 +70,14 @@ const Register = () => {
             .catch((error) => {
                 toast.error(error);
             });
+    };
+
+    const handleVerifyEmail = () => {
+        verifyEmail().then(() => {
+            toast.success(
+                "Sended Verify Like on in your Email. Verify Your Email!"
+            );
+        });
     };
 
     const handleSignUpWithProvider = (event, providerName) => {

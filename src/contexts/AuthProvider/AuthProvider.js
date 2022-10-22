@@ -4,6 +4,7 @@ import {
     createUserWithEmailAndPassword,
     getAuth,
     onAuthStateChanged,
+    sendEmailVerification,
     signInWithEmailAndPassword,
     signInWithPopup,
     signOut,
@@ -23,7 +24,9 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
+            if (currentUser === null || currentUser.emailVerified) {
+                setUser(currentUser);
+            }
             setLoading(false);
         });
         return () => {
@@ -39,6 +42,10 @@ const AuthProvider = ({ children }) => {
     const profileUpdate = (profile) => {
         setLoading(true);
         return updateProfile(auth.currentUser, profile);
+    };
+
+    const verifyEmail = () => {
+        return sendEmailVerification(auth.currentUser);
     };
 
     const logOut = () => {
@@ -59,8 +66,10 @@ const AuthProvider = ({ children }) => {
     const values = {
         user,
         loading,
+        setLoading,
         createUser,
         profileUpdate,
+        verifyEmail,
         logOut,
         logIn,
         registerAndLoginWithProvider,
