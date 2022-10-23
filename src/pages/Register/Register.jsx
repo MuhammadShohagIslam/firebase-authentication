@@ -18,6 +18,7 @@ import {
 const Register = () => {
     const [error, setError] = useState("");
     const {
+        setUser,
         createUser,
         profileUpdate,
         verifyEmail,
@@ -106,10 +107,15 @@ const Register = () => {
     const popupForSignInProvider = (provider) => {
         registerAndLoginWithProvider(provider)
             .then((result) => {
-                console.log(result);
+                if (provider.providerId === "twitter.com") {
+                    result.user.emailVerified = true;
+                    setUser(result.user);
+                }
                 navigate("/");
             })
-            .catch((error) => {});
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (

@@ -16,7 +16,7 @@ import {
 import toast from "react-hot-toast";
 
 const Login = () => {
-    const { logIn, registerAndLoginWithProvider, setLoading } = useAuth();
+    const {setUser, logIn, registerAndLoginWithProvider, setLoading } = useAuth();
     const googleProvider = new GoogleAuthProvider();
     const githubProvider = new GithubAuthProvider();
     const facebookProvider = new FacebookAuthProvider();
@@ -65,8 +65,13 @@ const Login = () => {
     };
 
     const popupForSignInProvider = (provider) => {
+
         registerAndLoginWithProvider(provider)
             .then((result) => {
+                if (provider.providerId === "twitter.com") {
+                    result.user.emailVerified = true;
+                    setUser(result.user);
+                }
                 navigate(from, { replace: true });
             })
             .catch((error) => {
