@@ -8,7 +8,9 @@ import {
     signInWithEmailAndPassword,
     signInWithPopup,
     signOut,
+    updateEmail,
     updateProfile,
+    updatePassword
 } from "firebase/auth";
 
 const AuthContext = createContext();
@@ -25,6 +27,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             if (currentUser === null || currentUser.emailVerified) {
+                console.log(currentUser);
                 setUser(currentUser);
             }
             setLoading(false);
@@ -48,6 +51,15 @@ const AuthProvider = ({ children }) => {
         return sendEmailVerification(auth.currentUser);
     };
 
+    const emailUpdate = (newEmail) => {
+        setLoading(true);
+        return updateEmail(auth.currentUser, newEmail);
+    };
+
+    const passwordUpdate = (newPassword) => {
+        return updatePassword(auth.currentUser, newPassword)
+    }
+
     const logOut = () => {
         setLoading(true);
         return signOut(auth);
@@ -70,6 +82,8 @@ const AuthProvider = ({ children }) => {
         createUser,
         profileUpdate,
         verifyEmail,
+        emailUpdate,
+        passwordUpdate,
         logOut,
         logIn,
         registerAndLoginWithProvider,

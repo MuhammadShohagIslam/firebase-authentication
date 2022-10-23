@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { FaFacebookF, FaGithub, FaGooglePlusG } from "react-icons/fa";
+import {
+    FaFacebookF,
+    FaGithub,
+    FaGooglePlusG,
+    FaTwitter,
+} from "react-icons/fa";
 import { useAuth } from "../../contexts/AuthProvider/AuthProvider";
 import {
     FacebookAuthProvider,
     GithubAuthProvider,
     GoogleAuthProvider,
+    TwitterAuthProvider,
 } from "firebase/auth";
 
 const Register = () => {
@@ -22,6 +28,7 @@ const Register = () => {
     const googleProvider = new GoogleAuthProvider();
     const githubProvider = new GithubAuthProvider();
     const facebookProvider = new FacebookAuthProvider();
+    const twitterProvider = new TwitterAuthProvider();
 
     const navigate = useNavigate();
 
@@ -91,6 +98,9 @@ const Register = () => {
         if (providerName === "facebook") {
             popupForSignInProvider(facebookProvider);
         }
+        if (providerName === "twitter") {
+            popupForSignInProvider(twitterProvider);
+        }
     };
 
     const popupForSignInProvider = (provider) => {
@@ -128,6 +138,13 @@ const Register = () => {
                 >
                     <FaFacebookF className="text-lg mr-1" />
                     Register With FaceBook
+                </button>
+                <button
+                    onClick={(e) => handleSignUpWithProvider(e, "twitter")}
+                    className="btn btn-outline btn-block btn-primary  text-white "
+                >
+                    <FaTwitter className="text-lg mr-1" />
+                    Register With Twitter
                 </button>
             </div>
             <h2 className="text-center font-medium text-white text-xl mt-3">
